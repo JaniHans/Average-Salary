@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import './landingpage.css';
+
 
 function LandingPage() {
 
@@ -8,7 +9,67 @@ function LandingPage() {
     const [isError, setIsError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [responseStatus, setResponseStatus] = useState(0);
+    const [industryArray, setIndustryArray] = useState([]);
+    const [value, setValue] = useState();
 
+
+    /**
+     * @URL - https://andmed.stat.ee/api/v1/en/stat/majandus/palk-ja-toojeukulu/palk/aastastatistika
+     * @Query - PA103
+     * @returns {Promise<void>}
+     */
+    const getStructureOfTheDb = async () => {
+        try {
+            const response = await fetch("https://andmed.stat.ee/api/v1/en/stat/PA103")
+            if (!response.ok) {
+                console.log("Where is the response")
+            console.log(response)
+                throw new Error(`Response status :  ${setResponseStatus(response.status)}`)
+            }
+            const result = await response.json();
+            console.log("This is the object that is printed below")
+            console.log(result);
+            console.log(result.variables[1])
+            const industryObject = result.variables[1];
+            console.log(industryObject.valueTexts)
+            setIndustryArray(industryObject.valueTexts);
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const getSalaryByCategory = async () => {
+        try {
+            const response = await fetch("https://andmed.stat.ee/api/v1/en/stat/PA103", {
+            method : "POST",
+            body : JSON.stringify(
+                {
+                    "query" : [
+                    {
+                        "code" : "Tegevusala",
+                        "selection" : {
+                            "filter" : "item",
+                            "values" : [
+                                "TOTAL"
+                            ]
+                        }
+                    }
+                ],
+                    "response" : {
+                        "format" : "json-stat2"
+                    }
+            })
+            })
+            if (!response.ok) {
+                console.log(response)
+                throw new Error(`Response status :  ${setResponseStatus(response.status)}`)
+            }
+            const result = response.json();
+            console.log(result);
+        } catch (e) {
+            console.log(e)
+        }
+    }
 
     const loadServerMessage = async () => {
 
@@ -28,7 +89,7 @@ function LandingPage() {
                 ${setResponseStatus(response.status)}`);
                     }
                     const result = await response.json();
-                    setMessage(result.data)
+                    setMessage(result.message)
 
                 } catch (error) {
                     console.log(error)
@@ -41,12 +102,32 @@ function LandingPage() {
 
     }
 
+    function handleIndustryChange(e) {
+        setValue(e.target.value)
+        console.log(value)
+    }
+
+
     return (
-        <div>
-            <h1>Äripäeva palgaturu analüüs</h1>
-            <button onClick={loadServerMessage}>Load Server</button>
-            {isLoading ? <p className="loading">Loading...</p> : null}
-            <div>{isError ? <p className="error">Status code : {responseStatus} - {errorMessage}</p> : message}</div>
+        <div className="main-container">
+            <div className="main-container-items">
+                <div className="buttons">
+                    <button onClick={loadServerMessage}>LOAD SERVER</button>
+                    <button onClick={loadServerMessage}>LOAD AI</button>
+                    <button onClick={getStructureOfTheDb}>LOAD DB</button>
+                    <button onClick={getSalaryByCategory}>LOAD BY CATEGORY</button>
+                </div>
+                <div className="message-container">
+                    {isLoading ? <p className="loading">Loading...</p> : null}
+                    {isError ? <p className="error">Status code : {responseStatus} - {errorMessage}</p> : null}
+                </div>
+            </div>
+            <label htmlFor="">Choose Industry</label>
+            <select name="industry-names" value={value} onChange={(e) => handleIndustryChange(e.target.value)}>
+                {industryArray && industryArray.map((item, key) => (
+                    <option key={key} value={item}>{item}</option>
+                ))}
+            </select>
         </div>
 
     );

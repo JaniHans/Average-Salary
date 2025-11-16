@@ -1,11 +1,28 @@
 body {
-    text-align: center;
-    align-items: center;
     font-family: 'Inter', sans-serif;
-    font-style: normal;
-    font-weight: normal;
+    height: 100%;
 }
 
 button {
     font-family: 'Inter', sans-serif;
+    color: white;
+    width: 80px;
+    height: 80px;
+    background-color: darkred;
+    border-radius: 50px;
+    margin: 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #c92a2a;
+    transform: scale(1.1);
+}
+
+button:active {
+    transform: scale(0.95);
 }
