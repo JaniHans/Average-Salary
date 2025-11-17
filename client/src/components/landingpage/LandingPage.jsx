@@ -9,13 +9,55 @@ function LandingPage() {
     const [isError, setIsError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [responseStatus, setResponseStatus] = useState(0);
-    const [industryArray, setIndustryArray] = useState([]);
+    const [industry, setIndustry] = useState({});
     const [value, setValue] = useState();
 
+    console.log(value)
+
+    /**
+     * Transform this into a map so we can use later for queries, we need to match ids with economic activities
+     * @param idArray - Array of db query ids for a corresponding economic activity
+     * @param activityArray - Array of strings for an economic activity
+     */
+    function addEconomicActivityAndIdToMap(idArray, activityArray) {
+
+        console.log(idArray)
+        console.log(activityArray)
+
+        let idEconomicActivityObject = {}
+
+        for (let i = 0; i < activityArray.length ; i++) {
+            if (i === 0) {
+                continue;
+            }
+            idEconomicActivityObject[idArray[i]] = activityArray[i]
+
+
+        }
+        setIndustry(idEconomicActivityObject)
+
+    }
+
+    const getUrlQueryForDifferentDatabases = async () => {
+        try {
+            const response = await fetch("https://andmed.stat.ee/api/v1/en/stat/majandus/palk-ja-toojeukulu/palk/aastastatistika")
+            if (!response.ok) {
+                console.log("Where is the response")
+                console.log(response)
+                throw new Error(`Response status :  ${setResponseStatus(response.status)}`)
+            }
+            const result = await response.json();
+            console.log("How it looks")
+            console.log(result);
+
+        } catch (e) {
+            console.log(e)
+        }
+    }
 
     /**
      * @URL - https://andmed.stat.ee/api/v1/en/stat/majandus/palk-ja-toojeukulu/palk/aastastatistika
-     * @Query - PA103
+     * @POST Query - PA103
      * @returns {Promise<void>}
      */
     const getStructureOfTheDb = async () => {
@@ -31,8 +73,10 @@ function LandingPage() {
             console.log(result);
             console.log(result.variables[1])
             const industryObject = result.variables[1];
-            console.log(industryObject.valueTexts)
-            setIndustryArray(industryObject.valueTexts);
+            const industryArray = industryObject.valueTexts;
+            const industryArrayIds = industryObject.values;
+            // transform to map
+            addEconomicActivityAndIdToMap(industryArrayIds, industryArray);
         } catch (e) {
             console.log(e)
         }
@@ -50,10 +94,29 @@ function LandingPage() {
                         "selection" : {
                             "filter" : "item",
                             "values" : [
-                                "TOTAL"
+                                'J63'
                             ]
                         }
-                    }
+                    },
+                        {
+                            "code" : "Näitaja",
+                            "selection" : {
+                                "filter" : "item",
+                                "values" : [
+                                    'GR_W_AVG'
+                                ]
+                            }
+                        },
+                        {
+                            "code" : "Vaatlusperiood",
+                            "selection" : {
+                                "filter" : "item",
+                                "values" : [
+                                    '2024'
+                                ]
+                            }
+                        }
+
                 ],
                     "response" : {
                         "format" : "json-stat2"
@@ -64,7 +127,7 @@ function LandingPage() {
                 console.log(response)
                 throw new Error(`Response status :  ${setResponseStatus(response.status)}`)
             }
-            const result = response.json();
+            const result = await response.json();
             console.log(result);
         } catch (e) {
             console.log(e)
@@ -103,8 +166,10 @@ function LandingPage() {
     }
 
     function handleIndustryChange(e) {
-        setValue(e.target.value)
-        console.log(value)
+       if (e.target.value !== "") {
+           setValue(e.target.value)
+       }
+
     }
 
 
@@ -112,7 +177,8 @@ function LandingPage() {
         <div className="main-container">
             <div className="main-container-items">
                 <div className="buttons">
-                    <button onClick={loadServerMessage}>LOAD SERVER</button>
+                    <button onClick={loadServerMessage}>LOAD SERVER FOR FUN</button>
+                    <button onClick={loadServerMessage}>Get Different DATABASES</button>
                     <button onClick={loadServerMessage}>LOAD AI</button>
                     <button onClick={getStructureOfTheDb}>LOAD DB</button>
                     <button onClick={getSalaryByCategory}>LOAD BY CATEGORY</button>
@@ -123,10 +189,13 @@ function LandingPage() {
                 </div>
             </div>
             <label htmlFor="">Choose Industry</label>
-            <select name="industry-names" value={value} onChange={(e) => handleIndustryChange(e.target.value)}>
-                {industryArray && industryArray.map((item, key) => (
-                    <option key={key} value={item}>{item}</option>
-                ))}
+            <select name="industry-names" onChange={(e) => handleIndustryChange(e)}>
+                <option selected disabled>---Pick industry---</option>
+                {
+                    industry && Object.entries(industry).map(([key, value]) =>
+                    <option key={key} value={key.toString()}>{value}</option>
+                    )
+                }
             </select>
         </div>
 
