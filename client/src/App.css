@@ -1,22 +1,25 @@
 body {
+    margin: 0;
     font-family: 'Inter', sans-serif;
     height: 100%;
+    background-color: #373434;
 }
 
-button {
+select, option, button {
     font-family: 'Inter', sans-serif;
     color: white;
-    width: 80px;
-    height: 80px;
-    background-color: darkred;
-    border-radius: 50px;
-    margin: 15px;
+    height: 1.5rem;
+    background-color: mediumpurple;
+    border-radius: 15px;
+    margin: 10px;
     border: none;
     cursor: pointer;
     font-size: 12px;
     transition: all 0.3s ease;
     font-weight: bold;
+
 }
+
 
 button:hover {
     background-color: #c92a2a;
