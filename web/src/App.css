@@ -9,17 +9,17 @@ select, option, button {
     font-family: 'Inter', sans-serif;
     color: white;
     height: 1.5rem;
-    background-color: mediumpurple;
+    background-color: #7072db;
     border-radius: 15px;
+    max-width: 150px;
     margin: 10px;
-    border: none;
+    border: white 1px solid;
     cursor: pointer;
     font-size: 12px;
     transition: all 0.3s ease;
     font-weight: bold;
 
 }
-
 
 button:hover {
     background-color: #c92a2a;

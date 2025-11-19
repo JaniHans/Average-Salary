@@ -1,0 +1,73 @@
+
+.main-container {
+    text-align: center;
+}
+
+.main-container-items {
+    margin-top: 150px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    color: white;
+    padding: 15px;
+}
+
+
+.text-container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.industry-container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+
+label {
+    padding: 5px;
+}
+
+h2 {
+    margin: 0;
+    padding: 5px;
+}
+
+p {
+    margin: 0;
+    padding: 5px;
+}
+
+.hidden {
+    display: none;
+}
+.show {
+    display: flex;
+}
+
+.error {
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    font-size: 15px;
+    color: red;
+    text-align: center;
+
+    font-weight: bold;
+}
+
+.loading {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    margin : auto;
+    font-size: 15px;
+    color: green;
+    font-weight: bold;
+}
