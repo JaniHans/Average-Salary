@@ -36,7 +36,7 @@ function LandingPage() {
                 setCurrentState(ERROR("Error loading the network"))
             }
 
-        }, 3000)
+        }, 2000)
     }
     if (currentState.status === 'success') {
         navigate("/analyzer")

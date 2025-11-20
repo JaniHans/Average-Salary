@@ -1,50 +1,51 @@
 import React, {ChangeEvent, useState} from 'react';
 import './analyzer.css';
 
+type EconomicActivityRecord = Record<string, string>
 
-type EconomicActivityObject = Record<string, string>
+type SalaryArrayObject = [number, number, number, number, null, number, number, number]
+type industrySalaryTuple = [number, number, number, number] | []
+type industrySalaryTupleChange = [null, number, number, number] | []
 
 function Analyzer() {
 
-    const [message, setMessage] = useState(null);
-
-    const [errorMessage, setErrorMessage] = useState("");
     const [responseStatus, setResponseStatus] = useState(0);
-    const [industry, setIndustry] = useState<EconomicActivityObject>({});
+    const [industryCodeActivity, setIndustryCodeActivity] = useState<EconomicActivityRecord>({});
     const [industryCode, setIndustryCode] = useState<string>("");
-    const [industrySalary, setIndustrySalary] = useState([]);
+    const [industrySalary, setIndustrySalary] = useState<industrySalaryTuple>([]);
+    const [industrySalaryChangeYearly, setIndustrySalaryChangeYearly] = useState<industrySalaryTupleChange>([]);
 
-    console.log(industryCode)
     /**
      * Transform this into a map so we can use later for queries, we need to match ids with economic activities
      * @param idArray - Array of db query ids for a corresponding economic activity
      * @param activityArray - Array of strings for an economic activity
      */
-    function addEconomicActivityAndIdToMap(idArray: [string], activityArray : [string]) {
+    function addEconomicActivityAndIdToRecord(idArray: [string], activityArray : [string]) {
 
-        console.log(idArray)
-        console.log(activityArray)
-
-        let idEconomicActivityObject: EconomicActivityObject = {};
+        let idEconomicActivityObject: EconomicActivityRecord = {};
 
         for (let i = 0; i < activityArray.length ; i++) {
             if (i === 0) {
                 continue;
             }
             idEconomicActivityObject[idArray[i]] = activityArray[i]
-
-
         }
-        setIndustry(idEconomicActivityObject)
-
+        setIndustryCodeActivity(idEconomicActivityObject)
     }
-
     /**
-     *
+     * Convert first four elements to a industry salary array and the last 4 as a change in percentage
      * @returns {Promise<void>}
      */
     function addIndustrySalaryByYearlyToArray(salaryArrayYearly: any) {
-        //TODO
+        if (salaryArrayYearly.length < 1) {
+            throw Error("No data available for " + industryCodeActivity[industryCode]);
+        }
+
+        const salary : industrySalaryTuple = salaryArrayYearly.slice(0, 4);
+        const change : industrySalaryTupleChange = salaryArrayYearly.slice(4, salaryArrayYearly.length);
+
+        setIndustrySalary([...salary])
+        setIndustrySalaryChangeYearly([...change])
     }
     const getUrlQueryForDifferentDatabases = async () => {
         try {
@@ -82,7 +83,7 @@ function Analyzer() {
             const industryArray = industryObject.valueTexts;
             const industryArrayIds = industryObject.values;
             // transform to map
-            addEconomicActivityAndIdToMap(industryArrayIds, industryArray);
+            addEconomicActivityAndIdToRecord(industryArrayIds, industryArray);
         } catch (e) {
             console.log(e)
         }
@@ -124,7 +125,9 @@ function Analyzer() {
                 throw new Error(`Response status :  ${setResponseStatus(response.status)}`)
             }
             const result = await response.json();
-            console.log(result);
+            const salaries : SalaryArrayObject = result.value;
+            console.log(salaries)
+            addIndustrySalaryByYearlyToArray(salaries);
         } catch (e) {
             console.log(e)
         }
@@ -162,14 +165,11 @@ function Analyzer() {
 
     function handleIndustryChange(e : ChangeEvent<HTMLSelectElement>) {
         const value = e.target.value;
-
         if (value.startsWith("default")) {
             return;
         }
         setIndustryCode(value);
-
     }
-
 
     return (
         <div className="main-container">
@@ -186,11 +186,11 @@ function Analyzer() {
 
                     </div>
                     <div className="industry-container">
-                        <label hidden={!industry} htmlFor="industry-select">Select industry</label>
-                        <select defaultValue="" hidden={!industry} id="industry-select" name="industry-names" onChange={(e : ChangeEvent<HTMLSelectElement>   ) => handleIndustryChange(e)}>
+                        <label hidden={!industryCodeActivity} htmlFor="industry-select">Select industry</label>
+                        <select defaultValue="" hidden={!industryCodeActivity} id="industry-select" name="industry-names" onChange={(e : ChangeEvent<HTMLSelectElement>   ) => handleIndustryChange(e)}>
                             <option value="default">---Choose an option---</option>
                             {
-                                industry && Object.entries(industry).map(([key, value]) =>
+                                industryCodeActivity && Object.entries(industryCodeActivity).map(([key, value]) =>
                                     <option key={key} value={key.toString()}>{value}</option>
                                 )
                             }
@@ -198,11 +198,7 @@ function Analyzer() {
                         <button hidden={!industryCode} onClick={getSalaryByCategory}>LOAD SALARIES</button>
                     </div>
                 </div>
-
-
-
             </div>
-
         </div>
 
     );
