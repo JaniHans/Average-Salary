@@ -10,8 +10,9 @@ type industrySalaryTupleChange = [null, number, number, number] | []
 function Analyzer() {
 
     const [responseStatus, setResponseStatus] = useState(0);
-    const [industryCodeActivity, setIndustryCodeActivity] = useState<EconomicActivityRecord>({});
+    const [industryCodeActivityRecord, setIndustryCodeActivityRecord] = useState<EconomicActivityRecord>({});
     const [industryCode, setIndustryCode] = useState<string>("");
+    const [industryActivity, setIndustryActivity] = useState<string>("");
     const [industrySalary, setIndustrySalary] = useState<industrySalaryTuple>([]);
     const [industrySalaryChangeYearly, setIndustrySalaryChangeYearly] = useState<industrySalaryTupleChange>([]);
 
@@ -30,7 +31,7 @@ function Analyzer() {
             }
             idEconomicActivityObject[idArray[i]] = activityArray[i]
         }
-        setIndustryCodeActivity(idEconomicActivityObject)
+        setIndustryCodeActivityRecord(idEconomicActivityObject)
     }
     /**
      * Convert first four elements to a industry salary array and the last 4 as a change in percentage
@@ -38,7 +39,7 @@ function Analyzer() {
      */
     function addIndustrySalaryByYearlyToArray(salaryArrayYearly: any) {
         if (salaryArrayYearly.length < 1) {
-            throw Error("No data available for " + industryCodeActivity[industryCode]);
+            throw Error("No data available for " + industryCodeActivityRecord[industryCode]);
         }
 
         const salary : industrySalaryTuple = salaryArrayYearly.slice(0, 4);
@@ -131,8 +132,16 @@ function Analyzer() {
         } catch (e) {
             console.log(e)
         }
+        renderIndustrySalaries()
     }
 
+    function renderIndustrySalaries() {
+        if (industrySalary.length < 0) {
+            return;
+            //TODO
+        }
+
+    }
     // const loadServerMessage = async () => {
     //
     //     if (isError) {
@@ -164,12 +173,15 @@ function Analyzer() {
     // }
 
     function handleIndustryChange(e : ChangeEvent<HTMLSelectElement>) {
+        console.log(e.target.value)
+        console.log(e.target.children)
         const value = e.target.value;
         if (value.startsWith("default")) {
             return;
         }
         setIndustryCode(value);
     }
+
 
     return (
         <div className="main-container">
@@ -186,16 +198,43 @@ function Analyzer() {
 
                     </div>
                     <div className="industry-container">
-                        <label hidden={!industryCodeActivity} htmlFor="industry-select">Select industry</label>
-                        <select defaultValue="" hidden={!industryCodeActivity} id="industry-select" name="industry-names" onChange={(e : ChangeEvent<HTMLSelectElement>   ) => handleIndustryChange(e)}>
+                        <div className="" hidden={Object.keys(industryCodeActivityRecord).length === 0}>
+                        <label htmlFor="industry-select">Select industry</label>
+                        <select defaultValue="" id="industry-select" name="industry-names" onChange={(e : ChangeEvent<HTMLSelectElement>) => handleIndustryChange(e)}>
                             <option value="default">---Choose an option---</option>
                             {
-                                industryCodeActivity && Object.entries(industryCodeActivity).map(([key, value]) =>
+                                industryCodeActivityRecord && Object.entries(industryCodeActivityRecord).map(([key, value]) =>
+
                                     <option key={key} value={key.toString()}>{value}</option>
+
                                 )
                             }
+
                         </select>
+                        </div>
                         <button hidden={!industryCode} onClick={getSalaryByCategory}>LOAD SALARIES</button>
+                        <div>-----------------------------------------</div>
+                        {industrySalary.length > 0 &&
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th>Salary</th>
+                                <th>Increase</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {industrySalary.map((salary, index) => (
+                                <>
+                                    <tr key={index}></tr>
+                                    <td>{2021 + index}</td>
+                                    <td>{salary}€</td>
+                                    <td>{industrySalaryChangeYearly[index] !== null ? industrySalaryChangeYearly[index] + "%" : "default"}</td>
+                                </>
+                                ))}
+                            </tbody>
+                        </table>
+                        }
                     </div>
                 </div>
             </div>
