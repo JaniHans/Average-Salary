@@ -86,8 +86,7 @@ function Analyzer() {
                 throw new Error(`Response status :  `)
             }
             const result = await response.json();
-            console.log("This is the object that is printed below")
-            console.log(result);
+
 
             const industryObject = result.variables[1];
             const industryArray = industryObject.valueTexts;
@@ -166,11 +165,8 @@ function Analyzer() {
 
     function transformAIAnalysisIntoDifferentStatesForFormatting(summary : string){
 
-
-
         const indexOverview = summary.indexOf("OVERVIEW");
         const indexForecast = summary.indexOf("FORECAST");
-        const indexRec = summary.indexOf("ANALYSIS")
 
         const overview = summary.substring(indexOverview + 8, indexForecast);
 
@@ -213,14 +209,12 @@ function Analyzer() {
             console.log(response)
         }
         const result = await response.json();
-
         console.log(result.data)
         transformAIAnalysisIntoDifferentStatesForFormatting(result.data)
     } catch (error) {
         console.log(error)
     }
     }
-
 
     return (
         <div className="main-container">
@@ -230,7 +224,7 @@ function Analyzer() {
                     <p>Get industry average salaries for the last 4 years</p>
                     <p>Use AI to transform your career in the right direction</p>
                     <div className="buttons">
-                        <button onClick={categorizeIndustriesByActivityAndCodes}>GET INDUSTRY LIST</button>
+                        <button hidden={industryActivity.length > 0} onClick={categorizeIndustriesByActivityAndCodes}>GET INDUSTRY LIST</button>
                     </div>
                     <div className="industry-container">
                         <div className="industry-container-item" hidden={Object.keys(industryCodeActivityRecord).length === 0}>
@@ -244,7 +238,6 @@ function Analyzer() {
 
                                 )
                             }
-
                         </select>
                         </div>
                         <button hidden={!industryCode} onClick={getSalaryByCategory}>LOAD SALARIES</button>
@@ -282,7 +275,6 @@ function Analyzer() {
                     <p>{openAIRecommendation}</p>
                             </div>
                     }
-
                     </div>
                 </div>
             </div>
