@@ -194,7 +194,6 @@ function Analyzer() {
 
         setCurrentState(LOADING)
 
-
     const object = {
         name : industryActivity,
         salaries : industrySalary,

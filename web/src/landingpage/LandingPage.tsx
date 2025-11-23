@@ -33,7 +33,7 @@ function LandingPage() {
 
             } catch (error) {
                 console.log(error)
-                setCurrentState(ERROR("Error loading the network"))
+                setCurrentState(ERROR("Error loading the network, backend node server is not running"))
             }
 
         }, 2000)

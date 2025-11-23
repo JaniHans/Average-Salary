@@ -1,7 +1,5 @@
 import OPENAI from "openai";
 
-console.log(process.env.OPENAI_API_KEY)
-
 export const client = new OPENAI({
     apiKey : process.env.OPENAI_API_KEY
 });
