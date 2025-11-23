@@ -27,6 +27,11 @@
     align-items: center;
 }
 
+.industry-container-item {
+    display: flex;
+    flex-direction: column;
+}
+
 label {
     padding: 5px;
 }
