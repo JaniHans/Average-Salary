@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useState} from 'react';
 import './analyzer.css';
-import {DEFAULT, LOADING, requestState} from "../types/response";
+import {DEFAULT, LOADING, requestState, SUCCESS} from "../types/response";
 
 type EconomicActivityRecord = Record<string, string>
 
@@ -166,6 +166,8 @@ function Analyzer() {
 
     function transformAIAnalysisIntoDifferentStatesForFormatting(summary : string){
 
+
+
         const indexOverview = summary.indexOf("OVERVIEW");
         const indexForecast = summary.indexOf("FORECAST");
         const indexRec = summary.indexOf("ANALYSIS")
@@ -175,6 +177,7 @@ function Analyzer() {
         const forecast = summary.substring(summary.lastIndexOf("FORECAST") + 9, summary.indexOf("ANALYSIS"))
         const recommendations = summary.substring(summary.lastIndexOf("ANALYSIS") + 9);
 
+        setCurrentState(DEFAULT)
         setOpenAISummary(overview)
         setOpenAIForecast(forecast);
         setOpenAIRecommendation(recommendations);
@@ -246,9 +249,8 @@ function Analyzer() {
                         </select>
                         </div>
                         <button hidden={!industryCode} onClick={getSalaryByCategory}>LOAD SALARIES</button>
-                        <div>-----------------------------------------</div>
                         {industrySalary.length > 0 &&
-                        <table>
+                        <table className="table">
                             <thead>
                             <tr>
                                 <th>Year</th>
@@ -269,6 +271,8 @@ function Analyzer() {
                         </table>
                         }
                         <button hidden={!salaryTableLoaded} onClick={convertIndustryNameSalaryAndYearlyIncreaseIntoAnObjectForOpenAi}>LOAD AI Analysis</button>
+                        {currentState.status === 'loading' && <div className="loading">{currentState.message}</div>}
+
                         {openAISummary.length > 100 &&
                             <div>
                                 <h3>Overview</h3>

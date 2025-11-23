@@ -32,6 +32,14 @@
     flex-direction: column;
 }
 
+.table {
+    padding: 15px;
+}
+
+th, td {
+    padding: 3px;
+}
+
 label {
     padding: 5px;
 }
