@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useState} from 'react';
 import './analyzer.css';
-import {DEFAULT, LOADING, requestState, SUCCESS} from "../types/response";
+import {DEFAULT, LOADING, requestState} from "../types/response";
 
 type EconomicActivityRecord = Record<string, string>
 
@@ -12,7 +12,7 @@ function Analyzer() {
 
     const [currentState, setCurrentState] = useState<requestState>(DEFAULT)
     const [responseStatus, setResponseStatus] = useState(0);
-
+    console.log(responseStatus)
     const [openAISummary, setOpenAISummary] = useState("");
     const [openAIForecast, setOpenAIForecast] = useState("");
     const [openAIRecommendation, setOpenAIRecommendation] = useState("");
@@ -58,22 +58,22 @@ function Analyzer() {
         setIndustrySalary([...salary])
         setIndustrySalaryChangeYearly([...change])
     }
-    const getUrlQueryForDifferentDatabases = async () => {
-        try {
-            const response = await fetch("https://andmed.stat.ee/api/v1/en/stat/majandus/palk-ja-toojeukulu/palk/aastastatistika")
-            if (!response.ok) {
-                console.log("Where is the response")
-                console.log(response)
-                throw new Error(`Response status : `)
-            }
-            const result = await response.json();
-            console.log("How it looks")
-            console.log(result);
-
-        } catch (e) {
-            console.log(e)
-        }
-    }
+    // const getUrlQueryForDifferentDatabases = async () => {
+    //     try {
+    //         const response = await fetch("https://andmed.stat.ee/api/v1/en/stat/majandus/palk-ja-toojeukulu/palk/aastastatistika")
+    //         if (!response.ok) {
+    //             console.log("Where is the response")
+    //             console.log(response)
+    //             throw new Error(`Response status : `)
+    //         }
+    //         const result = await response.json();
+    //         console.log("How it looks")
+    //         console.log(result);
+    //
+    //     } catch (e) {
+    //         console.log(e)
+    //     }
+    // }
 
     /**
      * @URL -source https://andmed.stat.ee/api/v1/en/stat/majandus/palk-ja-toojeukulu/palk/aastastatistika
