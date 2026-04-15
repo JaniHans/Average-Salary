@@ -4,9 +4,9 @@ import {DEFAULT, LOADING, requestState, SUCCESS} from "../types/response";
 
 type EconomicActivityRecord = Record<string, string>
 
-type SalaryArrayObject = [number, number, number, number, null, number, number, number]
-type industrySalaryTuple = [number, number, number, number] | []
-type industrySalaryTupleChange = [null, number, number, number] | []
+type SalaryArrayObject = [number, number, number, number, number, null, number, number, number, number]
+type industrySalaryTuple = [number, number, number, number, number] | []
+type industrySalaryTupleChange = [null, number, number, number, number] | []
 
 function Analyzer() {
 
@@ -51,8 +51,9 @@ function Analyzer() {
             throw Error("No data available for " + industryCodeActivityRecord[industryCode]);
         }
 
-        const salary : industrySalaryTuple = salaryArrayYearly.slice(0, 4);
-        const change : industrySalaryTupleChange = salaryArrayYearly.slice(4, salaryArrayYearly.length);
+        let salary: industrySalaryTuple;
+        salary = salaryArrayYearly.slice(0, 5);
+        const change : industrySalaryTupleChange = salaryArrayYearly.slice(5, salaryArrayYearly.length);
 
         setIndustrySalary([...salary])
         setIndustrySalaryChangeYearly([...change])

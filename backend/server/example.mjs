@@ -4,7 +4,6 @@ export const client = new OPENAI({
     apiKey : process.env.OPENAI_API_KEY
 });
 
-
 const industryName = "";
 const salary = []
 const salaryChangePercentage = []

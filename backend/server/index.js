@@ -35,7 +35,8 @@ app.post('/openai', cors(), async (req, res) => {
             `Year 2021: ${salary[0]} euros, ` +
             `Year 2022: ${salary[1]} euros ${salaryChangePercentage[1]} compared to previous year, ` +
             `Year 2023: ${salary[2]} , rose ${salaryChangePercentage[2]} compared to previous year and ` +
-            `Year 2024: ${salary[3]} euros ${salaryChangePercentage[3]}compared to previous year`
+            `Year 2024: ${salary[3]} euros ${salaryChangePercentage[3]} compared to previous year` +
+            `Year 2025: ${salary[4]} euros ${salaryChangePercentage[4]} compared to previous year`
     })
     console.log(response.output_text)
 
