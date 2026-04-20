@@ -222,7 +222,7 @@ function Analyzer() {
             <div className="main-container-items">
                 <div className="text-container">
                     <h3>Average salaries in Estonia powered by Statistics Estonia and OpenAI</h3>
-                    <p>Get industry average salaries for the last 4 years</p>
+                    <p>Get industry average salaries for the last 5 years</p>
                     <p>Use AI to transform your career in the right direction</p>
                     <div className="buttons">
                         <button hidden={industryActivity.length > 0} onClick={categorizeIndustriesByActivityAndCodes}>GET INDUSTRY LIST</button>

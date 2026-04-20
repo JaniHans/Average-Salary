@@ -26,7 +26,7 @@ app.post('/openai', cors(), async (req, res) => {
     const response = await client.responses.create({
 
         model: "gpt-4.1-mini",
-        input: "In a very short overview, 300-500 characters in total - explain the wage trend and forecast the wage trend for the next year whether it might be rising or falling. You should use three components and headers." +
+        input: "In a very short overview, 300-500 characters in total - explain the wage trend from 2021 to 2025 and forecast for the Year 2026, whether it might be rising or falling. You should use three components and headers." +
             "100% always follow the headings in CAPS that are below in the exact character as below written" +
             "OVERVIEW" +
             "FORECAST" +
