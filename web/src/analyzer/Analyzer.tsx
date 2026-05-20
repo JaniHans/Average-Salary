@@ -230,6 +230,7 @@ function Analyzer() {
                         </select>
                         </div>
                         <button hidden={!industryCode} onClick={getSalaryByCategory}>LOAD SALARIES</button>
+                        <div>{industryActivity ? industryActivity : ""}</div>
                         {industrySalary.length > 0 &&
                         <table className="table">
                             <thead>
