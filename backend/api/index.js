@@ -13,12 +13,12 @@ app.use(cors({
 }))
 app.use(express.json())
 
-app.get('/api', cors(), (req, res) => {
+app.get('/api', (req, res) => {
     console.log("Someone is making a request to the server "  + req.url)
     res.json({ message : "Hello from the server"})
 })
 
-app.post('/openai', cors(), async (req, res) => {
+app.post('/openai', async (req, res) => {
     console.log("Someone is making a request to the server "  + req.url)
 
 
