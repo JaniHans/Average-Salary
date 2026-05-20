@@ -8,8 +8,14 @@ const client = new OpenAI( {
     apiKey: process.env.OPENAI_API_KEY,
 })
 
+const allowedOrigins = [
+    "https://average-salary-25dl.vercel.app",
+    "http://localhost:3000",
+    process.env.CLIENT_ORIGIN
+].filter(Boolean);
+
 app.use(cors({
-    origin : "https://average-salary-25dl.vercel.app",
+    origin : allowedOrigins,
     methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"]
 }))
@@ -22,7 +28,7 @@ app.get('/api', (req, res) => {
     res.json({ message : "Hello from the server"})
 })
 
-app.post('/openai', async (req, res) => {
+const openAiAnalysisHandler = async (req, res) => {
     console.log("Someone is making a request to the server "  + req.url)
 
 
@@ -58,6 +64,8 @@ app.post('/openai', async (req, res) => {
 
 
 
-})
+}
+
+app.post(['/openai', '/api/openai', '/api'], openAiAnalysisHandler)
 
 export default app;
