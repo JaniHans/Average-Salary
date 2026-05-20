@@ -2,6 +2,9 @@ import React, {ChangeEvent, useState} from 'react';
 import './analyzer.css';
 import {DEFAULT, LOADING, requestState} from "../types/response";
 
+
+
+
 type EconomicActivityRecord = Record<string, string>
 
 type SalaryArrayObject = [number, number, number, number, number, null, number, number, number, number]
@@ -236,7 +239,6 @@ function Analyzer() {
                                 industryCodeActivityRecord && Object.entries(industryCodeActivityRecord).map(([key, value]) =>
 
                                     <option key={key} value={key.toString()}>{value}</option>
-
                                 )
                             }
                         </select>
