@@ -3,7 +3,7 @@ import './analyzer.css';
 import {DEFAULT, LOADING, requestState} from "../types/response";
 
 
-export const API_URL = "https://your-backend-project.vercel.app";
+export const API_URL = "https://average-salary-theta.vercel.app";
 
 
 type EconomicActivityRecord = Record<string, string>
@@ -203,7 +203,7 @@ function Analyzer() {
         console.log(object)
 
     try {
-        const response = await fetch("http://localhost:3001/openai", {
+        const response = await fetch(`${API_URL}/openai`, {
             method : "POST",
             headers : {
                 "Content-Type": "application/json",

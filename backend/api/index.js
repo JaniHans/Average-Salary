@@ -4,7 +4,7 @@ import OpenAI from "openai";
 
 const app = express();
 
-const client = new OpenAI({
+const client = new OpenAI( {
     apiKey: process.env.OPENAI_API_KEY,
 })
 

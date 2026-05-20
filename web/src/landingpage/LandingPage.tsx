@@ -3,6 +3,7 @@ import './landingpage.css';
 import {DEFAULT, ERROR, LOADING, requestState, SUCCESS} from "../types/response";
 import {useState} from "react";
 import { useNavigate} from 'react-router-dom';
+import {API_URL} from "../analyzer/Analyzer";
 
 
 
@@ -22,7 +23,7 @@ function LandingPage() {
         setTimeout(async () => {
 
             try {
-                const response = await fetch("http://localhost:3001/api");
+                const response = await fetch(`${API_URL}/api`);
                 console.log(response)
                 if (!response.ok) {
                     console.log(response)
