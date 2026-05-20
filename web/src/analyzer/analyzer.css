@@ -13,6 +13,11 @@
     padding: 15px;
 }
 
+.industry-name {
+    background-color: #7072db;
+    margin-top: 15px;
+
+}
 
 .text-container {
     display: flex;

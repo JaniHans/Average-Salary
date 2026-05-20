@@ -50,7 +50,7 @@ function LandingPage() {
                     <h2>Welcome to Äripäev Analyzer</h2>
                     <span>
                         <h3>Average salaries in Estonia powered by Statistics Estonia and OpenAI</h3>
-                        <button id="left-button" onClick={loadServerMessage}>GoTO</button>
+                        <button id="left-button" onClick={loadServerMessage}>Continue to the salary page</button>
                     </span>
                     {currentState.status === 'error' && <div className="error">{currentState.message}</div>}
                     {currentState.status === 'loading' && <div className="loading">{currentState.message}</div>}
