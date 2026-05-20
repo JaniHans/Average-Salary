@@ -16,7 +16,7 @@ function Analyzer() {
 
     const [currentState, setCurrentState] = useState<requestState>(DEFAULT)
     const [responseStatus, setResponseStatus] = useState(0);
-    console.log(responseStatus)
+
     const [openAISummary, setOpenAISummary] = useState("");
     const [openAIForecast, setOpenAIForecast] = useState("");
     const [openAIRecommendation, setOpenAIRecommendation] = useState("");
@@ -62,22 +62,7 @@ function Analyzer() {
         setIndustrySalary([...salary])
         setIndustrySalaryChangeYearly([...change])
     }
-    // const getUrlQueryForDifferentDatabases = async () => {
-    //     try {
-    //         const response = await fetch("https://andmed.stat.ee/api/v1/en/stat/majandus/palk-ja-toojeukulu/palk/aastastatistika")
-    //         if (!response.ok) {
-    //             console.log("Where is the response")
-    //             console.log(response)
-    //             throw new Error(`Response status : `)
-    //         }
-    //         const result = await response.json();
-    //         console.log("How it looks")
-    //         console.log(result);
-    //
-    //     } catch (e) {
-    //         console.log(e)
-    //     }
-    // }
+
 
     /**
      * @URL -source https://andmed.stat.ee/api/v1/en/stat/majandus/palk-ja-toojeukulu/palk/aastastatistika
@@ -99,7 +84,7 @@ function Analyzer() {
             // transform to map
             addEconomicActivityAndIdToRecord(industryArrayIds, industryArray);
         } catch (e) {
-            console.log(e)
+
         }
     }
 
@@ -136,24 +121,24 @@ function Analyzer() {
                     })
             })
             if (!response.ok) {
-                console.log(response)
+
                 throw new Error(`Response status :  ${setResponseStatus(response.status)}`)
             }
 
             const result = await response.json();
-            console.log(result.value)
+
             const salaries : SalaryArrayObject = result.value;
-            console.log(salaries)
+
             addIndustrySalaryByYearlyToArray(salaries);
             setSalaryTableLoaded(true);
         } catch (e) {
-            console.log(e)
+
         }
 
     }
 
     function handleIndustryChange(e : ChangeEvent<HTMLSelectElement>) {
-        console.log(e.target.value)
+
 
         const industryCode = e.target.value;
         const industryName = industryCodeActivityRecord[industryCode]
@@ -200,7 +185,7 @@ function Analyzer() {
         salaries : industrySalary,
         increase : industrySalaryChangeYearly
     }
-        console.log(object)
+
 
     try {
         const response = await fetch(`${API_URL}/openai`, {
@@ -211,10 +196,10 @@ function Analyzer() {
             body : JSON.stringify(object)
         })
         if (!response.ok) {
-            console.log(response)
+
         }
         const result = await response.json();
-        console.log(result.data)
+
         transformAIAnalysisIntoDifferentStatesForFormatting(result.data)
     } catch (error) {
         console.log(error)

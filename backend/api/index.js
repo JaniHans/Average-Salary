@@ -8,7 +8,9 @@ const client = new OpenAI( {
     apiKey: process.env.OPENAI_API_KEY,
 })
 
-app.use(cors())
+app.use(cors({
+    origin : "https://average-salary-25dl.vercel.app"
+}))
 app.use(express.json())
 
 app.get('/api', cors(), (req, res) => {
