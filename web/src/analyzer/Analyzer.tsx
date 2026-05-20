@@ -3,6 +3,7 @@ import './analyzer.css';
 import {DEFAULT, LOADING, requestState} from "../types/response";
 
 
+const API_URL = "https://your-backend-project.vercel.app";
 
 
 type EconomicActivityRecord = Record<string, string>
