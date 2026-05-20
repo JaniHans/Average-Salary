@@ -9,8 +9,12 @@ const client = new OpenAI( {
 })
 
 app.use(cors({
-    origin : "https://average-salary-25dl.vercel.app"
+    origin : "https://average-salary-25dl.vercel.app",
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
 }))
+
+app.options("*", cors());
 app.use(express.json())
 
 app.get('/api', (req, res) => {
