@@ -121,8 +121,8 @@ function Analyzer() {
                     })
             })
             if (!response.ok) {
-
-                throw new Error(`Response status :  ${setResponseStatus(response.status)}`)
+            setResponseStatus(response.status);
+                throw new Error(`Response status :  ${responseStatus}`)
             }
 
             const result = await response.json();
